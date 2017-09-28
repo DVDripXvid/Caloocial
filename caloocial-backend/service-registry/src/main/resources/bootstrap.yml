@@ -3,7 +3,7 @@ spring:
     name: service-registry
   cloud:
     config:
-      uri: http://config:8888
+      uri: http://localhost:9821
       fail-fast: true
 
 eureka:
