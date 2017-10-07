@@ -78,35 +78,21 @@ public class AuthApplication {
         @Autowired
         private InMemoryUserDetailsService userDetailsService;
 
-        @Autowired
-        private Environment env;
-
         @Override
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
-            // TODO persist clients details
-
-            // @formatter:off
+            // TODO: persist clients details
             clients.inMemory()
                     .withClient("browser")
                     .authorizedGrantTypes("refresh_token", "password")
                     .scopes("ui")
+
                     .and()
-                    .withClient("account-service")
-                    .secret(env.getProperty("ACCOUNT_SERVICE_PASSWORD"))
-                    .authorizedGrantTypes("client_credentials", "refresh_token")
-                    .scopes("server")
-                    .and()
-                    .withClient("statistics-service")
-                    .secret(env.getProperty("STATISTICS_SERVICE_PASSWORD"))
-                    .authorizedGrantTypes("client_credentials", "refresh_token")
-                    .scopes("server")
-                    .and()
-                    .withClient("notification-service")
-                    .secret(env.getProperty("NOTIFICATION_SERVICE_PASSWORD"))
+                    .withClient("example-service")
+                    .secret("example-secret")
                     .authorizedGrantTypes("client_credentials", "refresh_token")
                     .scopes("server");
-            // @formatter:on
+
         }
 
         @Override

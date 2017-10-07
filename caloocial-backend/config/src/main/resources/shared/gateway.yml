@@ -6,10 +6,15 @@ zuul:
 
   routes:
     auth-service:
-        path: /auth/**
-        url: http://localhost:5000
-        stripPrefix: false
-        sensitiveHeaders:
+      path: /uaa/**
+      url: http://localhost:5000
+      stripPrefix: false
+      sensitiveHeaders:
+    example-service:
+      path: /example/**
+      serviceId: example-service
+      stripPrefix: false
+      sensitiveHeaders:
 
 server:
   port: 4000

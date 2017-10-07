@@ -6,14 +6,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+
 @Service
 public class InMemoryUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if(username.equals("Omar") || username.equals("Oliver")){
-            return new User(username, "IceTea15", null);
+            String passwordHash = "$2a$04$nkSGwHSrVUYRLi3mRyO0g.wCOcJm6WdFhVgB7/hP34yAPD0dHGPY6"; //asd12345
+            return new User(username, passwordHash, Collections.emptyList());
         }
-        return null;
+        throw new UsernameNotFoundException(username);
     }
 }
