@@ -1,8 +1,8 @@
 # Caloocial
 
-##How to try:
+## How to try:
 
-###Login
+### Login
 - method: POST
 - url: http://localhost:4000/uaa/oauth/token?scope=ui&username=Oliver&password=asd12345&grant_type=password
 - headers: 
