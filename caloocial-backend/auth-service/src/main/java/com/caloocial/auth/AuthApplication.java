@@ -1,6 +1,7 @@
 package com.caloocial.auth;
 
 import com.caloocial.auth.service.security.InMemoryUserDetailsService;
+import com.caloocial.auth.service.security.Neo4jUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
@@ -8,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
+import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -29,6 +30,7 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 @EnableResourceServer
 @EnableDiscoveryClient
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableNeo4jRepositories
 public class AuthApplication {
 
     public static void main(String[] args) {
@@ -40,13 +42,13 @@ public class AuthApplication {
     protected static class webSecurityConfig extends WebSecurityConfigurerAdapter {
 
         @Autowired
-        private InMemoryUserDetailsService userDetailsService;
+        private Neo4jUserDetailsService userDetailsService;
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             // @formatter:off
             http
-                    .authorizeRequests().anyRequest().authenticated()
+                    .authorizeRequests().anyRequest().permitAll()
                     .and()
                     .csrf().disable();
             // @formatter:on
