@@ -22,13 +22,13 @@ public class GroupController {
         return groupService.createDefaultForUser(userId);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/persons/{personId}/groups")
+    @RequestMapping(method = RequestMethod.GET, path = "/groups")
     public Set<Group> getGroupsByPerson(@PathVariable long personId){
         return groupService.getGroupsByPersonId(personId);
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/person/{personId}/groups")
-    public Group createGroup(@PathVariable long personId, @RequestParam("groupName") String groupName){
+    @RequestMapping(method = RequestMethod.POST, path = "/groups")
+    public Group createGroup(@RequestParam("personId") long personId, @RequestParam("groupName") String groupName){
         return groupService.create(personId, groupName);
     }
 
