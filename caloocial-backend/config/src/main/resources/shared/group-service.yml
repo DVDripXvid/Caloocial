@@ -1,0 +1,3 @@
+server:
+  context-path: /usergroups
+  port: 9686

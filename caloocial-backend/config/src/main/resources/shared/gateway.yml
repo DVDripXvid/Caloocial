@@ -15,6 +15,11 @@ zuul:
       serviceId: example-service
       stripPrefix: false
       sensitiveHeaders:
+    group-service:
+      path: /usergroups/**
+      serviceId: group-service
+      stripPrefix: false
+      sensitiveHeaders:
 
 server:
   port: 4000
