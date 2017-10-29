@@ -13,3 +13,15 @@ security:
   oauth2:
     resource:
       user-info-uri: http://localhost:5000/uaa/users/current
+
+spring:
+  rabbitmq:
+    host: 192.168.99.100
+    port: 32772
+    user: guest
+    password: guest
+  data:
+    neo4j:
+      uri: http://192.168.99.100:32769
+      username: neo4j
+      password: neo4j21

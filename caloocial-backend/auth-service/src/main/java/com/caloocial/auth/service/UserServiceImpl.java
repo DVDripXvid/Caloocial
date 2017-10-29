@@ -1,8 +1,10 @@
 package com.caloocial.auth.service;
 
 import com.caloocial.auth.domain.User;
+import com.caloocial.auth.event.UserRegistered;
 import com.caloocial.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -12,11 +14,12 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository repository;
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
+    private ApplicationContext context;
 
     @Autowired
-    public UserServiceImpl(UserRepository repository) {
+    public UserServiceImpl(UserRepository repository, ApplicationContext context) {
         this.repository = repository;
+        this.context = context;
     }
 
     @Override
@@ -30,7 +33,11 @@ public class UserServiceImpl implements UserService {
 
         User saved = repository.save(user);
 
-        //TODO: somehow connect to a person
+        UserRegistered event = new UserRegistered(this, context.getId());
+        event.setUserId(saved.getId());
+        event.setUsername(saved.getUsername());
+        context.publishEvent(event);
+
         return saved;
     }
 }
