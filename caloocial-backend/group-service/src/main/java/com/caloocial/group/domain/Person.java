@@ -8,8 +8,8 @@ public class Person {
 
     @GraphId
     private Long id;
-
     private Long userId;
+    private String displayName;
 
     public Long getId() {
         return id;
@@ -40,5 +40,13 @@ public class Person {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }

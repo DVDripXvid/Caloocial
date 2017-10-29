@@ -17,11 +17,6 @@ public class GroupController {
         this.groupService = groupService;
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/default")
-    public Group createDefaultForUser(@RequestParam("userId") long userId){
-        return groupService.createDefaultForUser(userId);
-    }
-
     @RequestMapping(method = RequestMethod.GET)
     public Set<Group> getGroupsByPerson(@PathVariable long personId){
         return groupService.getGroupsByPersonId(personId);

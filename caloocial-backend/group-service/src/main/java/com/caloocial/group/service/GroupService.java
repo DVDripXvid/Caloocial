@@ -6,7 +6,7 @@ import java.util.Set;
 
 public interface GroupService {
 
-    Group createDefaultForUser(long userId);
+    Group createDefaultForUser(long userId, String displayName);
     Group create(long personId, String name);
     void addMember(long groupId, long personId);
     void removeMember(long groupId, long personId);

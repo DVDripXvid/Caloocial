@@ -18,7 +18,7 @@ public class UserRegisteredListener implements ApplicationListener<UserRegistere
 
     @Override
     public void onApplicationEvent(UserRegistered userRegistered) {
-        groupService.createDefaultForUser(userRegistered.getUserId());
+        groupService.createDefaultForUser(userRegistered.getUserId(), userRegistered.getUsername());
     }
 
 }

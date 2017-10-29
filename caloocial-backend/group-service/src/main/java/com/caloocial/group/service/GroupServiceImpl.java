@@ -26,7 +26,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Group createDefaultForUser(long userId) {
+    public Group createDefaultForUser(long userId, String displayName) {
         Group existing = groupRepository.findByNameAndAdministratorUserId(userId, DEFAULT_GROUP_NAME);
         Assert.isNull(existing, "Default group already exists for user: " + userId);
 
@@ -35,6 +35,7 @@ public class GroupServiceImpl implements GroupService {
 
         Person person = new Person();
         person.setUserId(userId);
+        person.setDisplayName(displayName);
         group.promoteToAdmin(person);
 
         groupRepository.save(group);

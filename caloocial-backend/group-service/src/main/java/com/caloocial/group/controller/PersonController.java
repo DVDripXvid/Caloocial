@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Set;
+
 @RestController("/persons")
 public class PersonController {
 
@@ -23,4 +25,8 @@ public class PersonController {
         return personService.getByUserId(userId);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/search/byDisplayName")
+    public Set<Person> findPersonByDisplayNameContains(@RequestParam("q") String query){
+        return personService.findByUserNameContains(query);
+    }
 }
