@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-@RestController
+@RestController("/groups")
 public class GroupController {
 
     private GroupService groupService;
@@ -17,27 +17,27 @@ public class GroupController {
         this.groupService = groupService;
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/groups/default")
+    @RequestMapping(method = RequestMethod.POST, path = "/default")
     public Group createDefaultForUser(@RequestParam("userId") long userId){
         return groupService.createDefaultForUser(userId);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/groups")
+    @RequestMapping(method = RequestMethod.GET)
     public Set<Group> getGroupsByPerson(@PathVariable long personId){
         return groupService.getGroupsByPersonId(personId);
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/groups")
+    @RequestMapping(method = RequestMethod.POST)
     public Group createGroup(@RequestParam("personId") long personId, @RequestParam("groupName") String groupName){
         return groupService.create(personId, groupName);
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/groups/{groupId}/members")
+    @RequestMapping(method = RequestMethod.POST, path = "/{groupId}/members")
     public void addMemberToGroup(@PathVariable long groupId, @RequestParam long personId){
         groupService.addMember(groupId, personId);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, path = "/groups/{groupId}/members")
+    @RequestMapping(method = RequestMethod.DELETE, path = "/{groupId}/members")
     public void removeMemberFromGroup(@PathVariable long groupId, @RequestParam long personId){
         groupService.removeMember(groupId, personId);
     }
