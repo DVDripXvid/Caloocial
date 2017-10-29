@@ -34,12 +34,11 @@ public class Person {
 
         Person person = (Person) o;
 
-        return userId.equals(person.id);
+        return id != null ? id.equals(person.id) : person.id == null;
     }
 
     @Override
     public int hashCode() {
-        return userId.hashCode();
+        return id != null ? id.hashCode() : 0;
     }
-
 }

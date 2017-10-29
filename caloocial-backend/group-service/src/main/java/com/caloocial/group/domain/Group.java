@@ -30,8 +30,8 @@ public class Group {
         if(members == null || members.isEmpty()){
             return;
         }
-        Optional<Person> member =  members.stream().filter(p -> p.getId() == personId).findFirst();
-        member.ifPresent(person -> members.remove(person));
+        Optional<Person> member =  getMemberById(personId);
+        member.ifPresent(members::remove);
     }
 
     public void promoteToAdmin(Person person){
@@ -47,12 +47,33 @@ public class Group {
         administrators.add(person);
     }
 
+    public void demoteToMember(Person person){
+        if(isMember(person)){
+            return;
+        }
+        if(isAdmin(person)){
+            administrators.remove(person);
+        }
+        if(members == null){
+            members = new HashSet<>();
+        }
+        members.add(person);
+    }
+
     public boolean isMember(Person person){
         return members != null && members.contains(person);
     }
 
     public boolean isAdmin(Person person){
         return administrators != null && administrators.contains(person);
+    }
+
+    public Optional<Person> getMemberById(long personId){
+        return members.stream().filter(p -> p.getId() == personId).findFirst();
+    }
+
+    public Optional<Person> getAdminById(long personId){
+        return administrators.stream().filter(p -> p.getId() == personId).findFirst();
     }
 
     public Long getId() {

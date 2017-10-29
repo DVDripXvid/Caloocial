@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -61,8 +62,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void addMember(long groupId, long personId) {
-        Group group = groupRepository.findById(groupId);
-        assertNotNull(group, groupId);
+        Group group = getGroupById(groupId);
 
         Person person = personRepository.findById(personId);
         assertNotNull(person, groupId);
@@ -73,7 +73,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void removeMember(long groupId, long personId) {
-        Group group = groupRepository.findById(groupId);
+        Group group = getGroupById(groupId);
 
         group.removeMember(groupId);
 
@@ -82,18 +82,35 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void promoteMemberToAdmin(long groupId, long personId) {
+        Group group = getGroupById(groupId);
 
+        Optional<Person> member = group.getMemberById(personId);
+
+        member.ifPresent(group::promoteToAdmin);
     }
 
     @Override
     public void demoteAdminToMember(long groupId, long personId) {
+        Group group = getGroupById(groupId);
 
+        if(group.getAdministrators().size() == 1){
+            return;
+        }
+
+        Optional<Person> admin = group.getAdminById(personId);
+        admin.ifPresent(group::demoteToMember);
     }
 
 
     @Override
     public Set<Group> getGroupsByPersonId(long personId) {
         return groupRepository.findByPersonId(personId);
+    }
+
+    private Group getGroupById(long id){
+        Group group = groupRepository.findById(id);
+        assertNotNull(group, id);
+        return group;
     }
 
     private void assertNotNull(Object entity, long id){
