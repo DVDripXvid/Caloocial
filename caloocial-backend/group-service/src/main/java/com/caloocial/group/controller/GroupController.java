@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-@RestController("/groups")
+@RestController
+@RequestMapping("/groups")
 public class GroupController {
 
     private GroupService groupService;
@@ -17,22 +18,17 @@ public class GroupController {
         this.groupService = groupService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public Set<Group> getGroupsByPerson(@PathVariable long personId){
-        return groupService.getGroupsByPersonId(personId);
-    }
-
     @RequestMapping(method = RequestMethod.POST)
     public Group createGroup(@RequestParam("personId") long personId, @RequestParam("groupName") String groupName){
         return groupService.create(personId, groupName);
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/{groupId}/members")
+    @RequestMapping(method = RequestMethod.POST, value = "/{groupId}/members")
     public void addMemberToGroup(@PathVariable long groupId, @RequestParam long personId){
         groupService.addMember(groupId, personId);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, path = "/{groupId}/members")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{groupId}/members")
     public void removeMemberFromGroup(@PathVariable long groupId, @RequestParam long personId){
         groupService.removeMember(groupId, personId);
     }
