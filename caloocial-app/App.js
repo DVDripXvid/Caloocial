@@ -31,16 +31,18 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <AppNavigator
-        ref={nav => (this.navigator = nav)}
-        style={styles.navigator}
-      />
+      <View style={styles.container}>
+        <AppNavigator
+          ref={nav => (this.navigator = nav)}
+        />
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  navigator: {
+  container: {
+    flex: 1,
     marginTop: Expo.Constants.statusBarHeight
   }
 });

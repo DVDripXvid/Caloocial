@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 import { Button, FormInput, Icon } from "react-native-elements";
-import Header from "../components/Header";
 
-//@flow
 export default class Login extends Component {
   static navigationOptions = {
     drawerLabel: "Logout",
@@ -34,7 +32,6 @@ export default class Login extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Header/>
         <FormInput
           placeholder="Username"
           onChangeText={text => this.setUsername(text)}
