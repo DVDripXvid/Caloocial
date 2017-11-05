@@ -13,7 +13,8 @@ const GroupNavigator = TabNavigator({
   }
 }, {
   tabBarOptions: {
-    showIcon: true
+    showIcon: true,
+    showLabel: false
   }
 });
 

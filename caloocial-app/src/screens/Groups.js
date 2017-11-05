@@ -9,6 +9,7 @@ class Groups extends Component {
   static navigationOptions = {
     //Tab navigator opts
     title: "Groups",
+    header: null,
     //Draw navigator opts
     drawerLabel: "Groups",
     drawerIcon: ({ tintColor }) => <Icon name="group" color={tintColor} />
@@ -53,6 +54,8 @@ const GroupsNavigator = StackNavigator({
       title: `Groupd id: ${navigation.state.params.id}`
     })
   }
+}, {
+  headerMode: "screen"
 });
 
 export default GroupsNavigator;
