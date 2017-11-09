@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { StyleSheet, ScrollView, Text, FlatList } from "react-native";
-import GroupCard from "../components/GroupCard";
-import { Button, Icon } from "react-native-elements";
+import { StyleSheet, Text, View } from "react-native";
+import { Button, Icon, List, ListItem } from "react-native-elements";
 import Group from "./group/Group";
 import { StackNavigator } from "react-navigation";
 
@@ -32,23 +31,23 @@ class Groups extends Component {
 
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <Button
           buttonStyle={styles.addButton}
           icon={{ name: "group-add" }}
           title="CREATE A NEW GROUP"
         />
-        <FlatList
-          data={this.state.groups}
-          renderItem={({item}) => (
-            <GroupCard
-              key={item.id}
-              onPress={() =>
-                this.props.navigation.navigate("Group", { id: item.id })}
+        <List>
+          {this.state.groups.map(g => (
+            <ListItem
+              key={g.id}
+              title={g.name}
+              subtitle={"Next event: 2017.12.21"}
+              onPress={() => this.props.navigation.navigate("Group", {id: g.id})}
             />
-          )}
-        />
-      </ScrollView>
+          ))}
+        </List>
+      </View>
     );
   }
 }
