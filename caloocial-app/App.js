@@ -3,7 +3,6 @@ import { StyleSheet, View, BackHandler } from "react-native";
 import { DrawerNavigator, NavigationActions } from "react-navigation";
 import Login from "./src/screens/Login";
 import Groups from "./src/screens/Groups";
-import Expo from "expo";
 
 const AppNavigator = DrawerNavigator({
   Groups: {
@@ -31,18 +30,12 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
         <AppNavigator
           ref={nav => (this.navigator = nav)}
         />
-      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: Expo.Constants.statusBarHeight
-  }
 });

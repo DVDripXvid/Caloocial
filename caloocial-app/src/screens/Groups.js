@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView, Text } from "react-native";
 import GroupCard from "../components/GroupCard";
 import { Button, Icon } from "react-native-elements";
 import Group from "./group/Group";
@@ -23,12 +23,9 @@ class Groups extends Component {
           icon={{ name: "group-add" }}
           title="CREATE A NEW GROUP"
         />
-        {[...Array(9).keys()].map(i => (
-          <GroupCard
-            key={i}
-            onPress={() => this.props.navigation.navigate("Group", { id: i })}
-          />
-        ))}
+        <GroupCard
+          onPress={() => this.props.navigation.navigate("Group", { id: 1 })}
+        />
       </ScrollView>
     );
   }
@@ -43,19 +40,22 @@ const styles = StyleSheet.create({
   }
 });
 
-const GroupsNavigator = StackNavigator({
-  Groups: {
-    screen: Groups
+const GroupsNavigator = StackNavigator(
+  {
+    Groups: {
+      screen: Groups
+    },
+    Group: {
+      path: "groups/:id",
+      screen: Group,
+      navigationOptions: ({ navigation }) => ({
+        title: `Groupd id: ${navigation.state.params.id}`
+      })
+    }
   },
-  Group: {
-    path: "groups/:id",
-    screen: Group,
-    navigationOptions: ({ navigation }) => ({
-      title: `Groupd id: ${navigation.state.params.id}`
-    })
+  {
+    headerMode: "screen"
   }
-}, {
-  headerMode: "screen"
-});
+);
 
 export default GroupsNavigator;
