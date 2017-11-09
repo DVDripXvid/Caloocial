@@ -4,6 +4,7 @@ import { Card, Badge, Icon } from "react-native-elements";
 import Dimensions from "Dimensions";
 
 export default class GroupCard extends Component {
+
   render() {
     return (
       <View>

@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, ScrollView, Text } from "react-native";
+import { StyleSheet, ScrollView, Text, FlatList } from "react-native";
 import GroupCard from "../components/GroupCard";
 import { Button, Icon } from "react-native-elements";
 import Group from "./group/Group";
 import { StackNavigator } from "react-navigation";
+
+import { getGroupsByPersonId } from "../services/groupService";
 
 class Groups extends Component {
   static navigationOptions = {
@@ -15,6 +17,19 @@ class Groups extends Component {
     drawerIcon: ({ tintColor }) => <Icon name="group" color={tintColor} />
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      groups: []
+    };
+  }
+
+  componentDidMount() {
+    let groups = getGroupsByPersonId(1);
+    console.log(groups);
+    groups.addListener(groups => this.setState({ groups }));
+  }
+
   render() {
     return (
       <ScrollView style={styles.container}>
@@ -23,8 +38,15 @@ class Groups extends Component {
           icon={{ name: "group-add" }}
           title="CREATE A NEW GROUP"
         />
-        <GroupCard
-          onPress={() => this.props.navigation.navigate("Group", { id: 1 })}
+        <FlatList
+          data={this.state.groups}
+          renderItem={({item}) => (
+            <GroupCard
+              key={item.id}
+              onPress={() =>
+                this.props.navigation.navigate("Group", { id: item.id })}
+            />
+          )}
         />
       </ScrollView>
     );
