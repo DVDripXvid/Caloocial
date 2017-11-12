@@ -14,17 +14,32 @@ const realm = new Realm({ schema: [groupSchema] });
 
 let groups = realm.objects("Group");
 
+let syncIntervalId;
+
 export function getGroupsByPersonId(id) {
-  getGroupsByPerson(id).then(syncronizeGroups);
+  if(!syncIntervalId){
+    syncIntervalId = setInterval(() => getGroupsByPersonId(id), 10000);
+  }
+  getGroupsByPerson(id).then(syncronizeGroups).catch(error => console.warn(error));
   return groups;
+}
+
+export function addGroupsListener(cb){
+  groups.addListener(cb);
+}
+
+export function removeGroupsListener(cb){
+  groups.removeListener(cb);
 }
 
 function syncronizeGroups(fetchedGroups) {
   let ids = fetchedGroups.map(g => g.id);
   var query = ids.map(id => `id != ${id}`).join(" AND ");
   let removedGroups = groups.filtered(query);
-  removedGroups.length > 0 && realm.delete(removedGroups);
   realm.write(() => {
+
+    removedGroups.length > 0 && realm.delete(removedGroups);
+
     fetchedGroups.forEach(g =>
       realm.create(
         "Group",

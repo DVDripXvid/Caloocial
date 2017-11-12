@@ -4,7 +4,7 @@ import { Button, Icon, List, ListItem } from "react-native-elements";
 import Group from "./group/Group";
 import { StackNavigator } from "react-navigation";
 
-import { getGroupsByPersonId } from "../services/groupService";
+import { getGroupsByPersonId, addGroupsListener, removeGroupsListener } from "../services/groupService";
 
 class Groups extends Component {
   static navigationOptions = {
@@ -21,12 +21,21 @@ class Groups extends Component {
     this.state = {
       groups: []
     };
+    this.groupsAreChanged = this.groupsAreChanged.bind(this);
   }
 
   componentDidMount() {
-    let groups = getGroupsByPersonId(1);
+    let groups = getGroupsByPersonId(8);
     console.log(groups);
-    groups.addListener(groups => this.setState({ groups }));
+    addGroupsListener(this.groupsAreChanged);
+  }
+
+  componentWillUnmount() {
+    removeGroupsListener(this.groupsAreChanged);
+  }
+
+  groupsAreChanged(groups) {
+    this.setState({ groups });
   }
 
   render() {
@@ -43,7 +52,11 @@ class Groups extends Component {
               key={g.id}
               title={g.name}
               subtitle={"Next event: 2017.12.21"}
-              onPress={() => this.props.navigation.navigate("Group", {id: g.id})}
+              onPress={() =>
+                this.props.navigation.navigate("Group", {
+                  id: g.id,
+                  name: g.name
+                })}
             />
           ))}
         </List>
@@ -70,7 +83,7 @@ const GroupsNavigator = StackNavigator(
       path: "groups/:id",
       screen: Group,
       navigationOptions: ({ navigation }) => ({
-        title: `Groupd id: ${navigation.state.params.id}`
+        title: navigation.state.params.name
       })
     }
   },

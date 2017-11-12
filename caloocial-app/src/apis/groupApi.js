@@ -1,16 +1,20 @@
+import config from "../config";
 
+const host = config.apiGateway + "/usergroups";
 
-const host = "http://localhost:4000/persongroups";
+export async function getGroupsByPerson(personId) {
+  let response = await fetch(`${host}/persons/${personId}/groups`);
+  if (response.status !== 200) {
+      throw Error("Failed to fetch groups");
+  }
+  return await response.json();
+}
 
-export async function getGroupsByPerson(personId){
-    return  Promise.resolve([
-        {id: 1, name: "Group1"},
-        {id: 2, name: "Group2"}
-    ]);
-    /*try {
-        return await fetch(`${host}/persons/${personId}/groups`).json();   
-    } catch (error) {
-        console.error("failed to fetch groups by personid: " + personId)
-        console.error(error);
-    }*/
+export async function getGroupDetails(groupId){
+  let response = await fetch(`${host}/groups/${groupId}`);
+  console.log(response);
+  if(response.status !== 200){
+    throw Error("Failed to fetch group details");
+  }
+  return await response.json();
 }

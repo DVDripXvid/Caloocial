@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Icon } from "react-native-elements";
 
-export default class Header extends Component {
+export default class GroupEvents extends Component {
   static navigationOptions = {
     tabBarLabel: "Events",
     tabBarIcon: ({ tintColor }) => (<Icon name="event" color={tintColor} ></Icon>)
