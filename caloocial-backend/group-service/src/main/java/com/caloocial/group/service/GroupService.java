@@ -14,4 +14,5 @@ public interface GroupService {
     void demoteAdminToMember(long groupId, long personId);
 
     Set<Group> getGroupsByPersonId(long personId);
+    Group getGroupDetails(long groupId);
 }

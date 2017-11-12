@@ -108,6 +108,11 @@ public class GroupServiceImpl implements GroupService {
         return groupRepository.findByPersonId(personId);
     }
 
+    @Override
+    public Group getGroupDetails(long groupId) {
+        return groupRepository.findByIdWithPersons(groupId);
+    }
+
     private Group getGroupById(long id){
         Group group = groupRepository.findById(id);
         assertNotNull(group, id);
