@@ -1,9 +1,16 @@
 import React, { Component } from "react";
-import { StyleSheet, ScrollView } from "react-native";
-import GroupCard from "../components/GroupCard";
-import { Button, Icon } from "react-native-elements";
+import { StyleSheet, Text, View, AsyncStorage } from "react-native";
+import { Button, Icon, List, ListItem } from "react-native-elements";
 import Group from "./group/Group";
 import { StackNavigator } from "react-navigation";
+
+import config from "../config";
+
+import {
+  getGroupsByPersonId,
+  addGroupsListener,
+  removeGroupsListener
+} from "../services/groupService";
 
 class Groups extends Component {
   static navigationOptions = {
@@ -15,21 +22,58 @@ class Groups extends Component {
     drawerIcon: ({ tintColor }) => <Icon name="group" color={tintColor} />
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      groups: []
+    };
+    this.groupsAreChanged = this.groupsAreChanged.bind(this);
+  }
+
+  componentDidMount() {
+    addGroupsListener(this.groupsAreChanged);
+    AsyncStorage.getItem(config.store.personKey)
+      .then(json => {
+        if (!json) throw "person is null";
+        return JSON.parse(json);
+      })
+      .then(person => {
+        let groups = getGroupsByPersonId(person.id);
+      })
+      .catch(e => console.error(e));
+  }
+
+  componentWillUnmount() {
+    removeGroupsListener(this.groupsAreChanged);
+  }
+
+  groupsAreChanged(groups) {
+    this.setState({ groups });
+  }
+
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <Button
           buttonStyle={styles.addButton}
           icon={{ name: "group-add" }}
           title="CREATE A NEW GROUP"
         />
-        {[...Array(9).keys()].map(i => (
-          <GroupCard
-            key={i}
-            onPress={() => this.props.navigation.navigate("Group", { id: i })}
-          />
-        ))}
-      </ScrollView>
+        <List>
+          {this.state.groups.map(g => (
+            <ListItem
+              key={g.id}
+              title={g.name}
+              subtitle={"Next event: 2017.12.21"}
+              onPress={() =>
+                this.props.navigation.navigate("Group", {
+                  id: g.id,
+                  name: g.name
+                })}
+            />
+          ))}
+        </List>
+      </View>
     );
   }
 }
@@ -43,19 +87,22 @@ const styles = StyleSheet.create({
   }
 });
 
-const GroupsNavigator = StackNavigator({
-  Groups: {
-    screen: Groups
+const GroupsNavigator = StackNavigator(
+  {
+    Groups: {
+      screen: Groups
+    },
+    Group: {
+      path: "groups/:id",
+      screen: Group,
+      navigationOptions: ({ navigation }) => ({
+        title: navigation.state.params.name
+      })
+    }
   },
-  Group: {
-    path: "groups/:id",
-    screen: Group,
-    navigationOptions: ({ navigation }) => ({
-      title: `Groupd id: ${navigation.state.params.id}`
-    })
+  {
+    headerMode: "screen"
   }
-}, {
-  headerMode: "screen"
-});
+);
 
 export default GroupsNavigator;

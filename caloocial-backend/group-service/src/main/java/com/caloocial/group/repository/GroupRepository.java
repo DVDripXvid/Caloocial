@@ -1,6 +1,7 @@
 package com.caloocial.group.repository;
 
 import com.caloocial.group.domain.Group;
+import com.caloocial.group.domain.Person;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 
@@ -19,5 +20,8 @@ public interface GroupRepository extends GraphRepository<Group> {
 
     @Query("MATCH (p:Person)-[:MEMBER_OF|:ADMINISTRATOR_OF]->(g:Group) WHERE ID(p)={0} RETURN g")
     Set<Group> findByPersonId(long personId);
+
+    @Query("MATCH (p:Person)-[rel:MEMBER_OF|:ADMINISTRATOR_OF]->(g:Group) WHERE ID(g)={0} RETURN g,rel,p")
+    Group findByIdWithPersons(long groupId);
 
 }

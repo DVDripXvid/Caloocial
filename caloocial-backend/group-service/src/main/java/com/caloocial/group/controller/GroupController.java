@@ -33,4 +33,9 @@ public class GroupController {
         groupService.removeMember(groupId, personId);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/{groupId}")
+    public Group getGroupDetails(@PathVariable long groupId){
+        return groupService.getGroupDetails(groupId);
+    }
+
 }

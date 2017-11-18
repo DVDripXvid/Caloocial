@@ -18,4 +18,4 @@ const GroupNavigator = TabNavigator({
   }
 });
 
-export default props => <GroupNavigator/>
+export default props => <GroupNavigator screenProps={{id: props.navigation.state.params.id}} />

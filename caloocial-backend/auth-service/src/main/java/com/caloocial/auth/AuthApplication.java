@@ -39,7 +39,7 @@ public class AuthApplication {
         SpringApplication.run(AuthApplication.class, args);
     }
 
-    @Configuration
+    /*@Configuration
     @EnableWebSecurity
     protected static class webSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -113,6 +113,6 @@ public class AuthApplication {
                     .tokenKeyAccess("permitAll()")
                     .checkTokenAccess("isAuthenticated()");
         }
-    }
+    }*/
 }
 
