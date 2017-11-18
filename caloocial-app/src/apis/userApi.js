@@ -3,8 +3,8 @@ import axios from "axios";
 
 const host = config.apiGateway + "/uaa";
 
-export async function login(username, passwordHash) {
-  return await axios.post(
+export function getAccessToken(username, passwordHash) {
+  return axios.post(
     host + "/oauth/token",
     {},
     {
@@ -19,12 +19,12 @@ export async function login(username, passwordHash) {
   );
 }
 
-export async function getPrincipal() {
-  return await axios.get(host + "/users/current");
+export function getPrincipal() {
+  return axios.get(host + "/users/current");
 }
 
-export async function refreshToken(refreshToken) {
-  return await axios.post(
+export function refreshAccessToken(refreshToken) {
+  return axios.post(
     host + "/oauth/token",
     {},
     {

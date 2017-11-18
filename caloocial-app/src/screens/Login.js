@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 import { Button, FormInput, Icon } from "react-native-elements";
 
+import { login } from "../services/userService";
+
 export default class Login extends Component {
   static navigationOptions = {
     drawerLabel: "Logout",
@@ -26,7 +28,11 @@ export default class Login extends Component {
   }
 
   onSignInClick() {
-    this.props.navigation.navigate('Groups');
+    login(this.state.username, this.state.password).then(resp => {
+      if(resp.status === 200){
+        this.props.navigation.navigate('Groups');
+      }
+    }).catch(e => console.error(e));
   }
 
   render() {

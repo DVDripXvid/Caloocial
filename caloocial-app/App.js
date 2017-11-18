@@ -3,6 +3,7 @@ import { StyleSheet, View, BackHandler } from "react-native";
 import { DrawerNavigator, NavigationActions } from "react-navigation";
 import Login from "./src/screens/Login";
 import Groups from "./src/screens/Groups";
+import axios from "axios";
 
 const AppNavigator = DrawerNavigator({
   Groups: {
@@ -14,8 +15,27 @@ const AppNavigator = DrawerNavigator({
 });
 
 export default class App extends React.Component {
+  componentWillMount() {
+    axios.interceptors.response.use(
+      resp => {
+        console.log("REQUEST ========> " + resp.request.responseURL);
+        console.log(resp.data);
+        return resp;
+      },
+      error => {
+        console.log("======= ERROR =======");
+        console.error(error);
+        if (error.response.status === 401)
+          this.navigator.dispatch(
+            NavigationActions.navigate({ routeName: "Login" })
+          );
+        return Promise.reject(error);
+      }
+    );
+  }
+
   componentDidMount() {
-    this.navigator.dispatch(NavigationActions.navigate({ routeName: "Login" }));
+    //this.navigator.dispatch(NavigationActions.navigate({ routeName: "Login" }));
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -29,13 +49,8 @@ export default class App extends React.Component {
   }
 
   render() {
-    return (
-        <AppNavigator
-          ref={nav => (this.navigator = nav)}
-        />
-    );
+    return <AppNavigator ref={nav => (this.navigator = nav)} />;
   }
 }
 
-const styles = StyleSheet.create({
-});
+const styles = StyleSheet.create({});

@@ -1,10 +1,16 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, AsyncStorage } from "react-native";
 import { Button, Icon, List, ListItem } from "react-native-elements";
 import Group from "./group/Group";
 import { StackNavigator } from "react-navigation";
 
-import { getGroupsByPersonId, addGroupsListener, removeGroupsListener } from "../services/groupService";
+import config from "../config";
+
+import {
+  getGroupsByPersonId,
+  addGroupsListener,
+  removeGroupsListener
+} from "../services/groupService";
 
 class Groups extends Component {
   static navigationOptions = {
@@ -25,9 +31,16 @@ class Groups extends Component {
   }
 
   componentDidMount() {
-    let groups = getGroupsByPersonId(8);
-    console.log(groups);
     addGroupsListener(this.groupsAreChanged);
+    AsyncStorage.getItem(config.store.personKey)
+      .then(json => {
+        if (!json) throw "person is null";
+        return JSON.parse(json);
+      })
+      .then(person => {
+        let groups = getGroupsByPersonId(person.id);
+      })
+      .catch(e => console.error(e));
   }
 
   componentWillUnmount() {

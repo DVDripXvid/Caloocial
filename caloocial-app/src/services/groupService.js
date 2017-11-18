@@ -20,7 +20,10 @@ export function getGroupsByPersonId(id) {
   if(!syncIntervalId){
     syncIntervalId = setInterval(() => getGroupsByPersonId(id), 10000);
   }
-  getGroupsByPerson(id).then(syncronizeGroups).catch(error => console.warn(error));
+  getGroupsByPerson(id).then(syncronizeGroups).catch(error => {
+    clearInterval(syncIntervalId);
+    syncIntervalId = null;
+  });
   return groups;
 }
 
