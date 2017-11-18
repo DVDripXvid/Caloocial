@@ -28,8 +28,8 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
                 .scopes("ui")
 
                 .and()
-                .withClient("example-service")
-                .secret("example-secret")
+                .withClient("event-service")
+                .secret("event-secret")
                 .authorizedGrantTypes("client_credentials", "refresh_token")
                 .scopes("server");
     }

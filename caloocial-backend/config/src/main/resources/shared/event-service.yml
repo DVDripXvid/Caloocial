@@ -1,12 +1,12 @@
 security:
   oauth2:
     client:
-      clientId: example-service
-      clientSecret: example-secret
+      clientId: event-service
+      clientSecret: event-secret
       accessTokenUri: http://localhost:5000/uaa/oauth/token
       grant-type: client_credentials
       scope: server
 
 server:
-  context-path: /example
+  context-path: /eventapi
   port: 2121

@@ -57,6 +57,7 @@ public class EventApplication extends ResourceServerConfigurerAdapter {
         return new OAuth2RestTemplate(clientCredentialsResourceDetails());
     }
 
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()

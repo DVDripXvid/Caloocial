@@ -10,13 +10,13 @@ zuul:
       url: http://localhost:5000
       stripPrefix: false
       sensitiveHeaders:
-    example-service:
-      path: /example/**
-      serviceId: example-service
+    event-service:
+      path: /eventapi/**
+      serviceId: event-service
       stripPrefix: false
       sensitiveHeaders:
     group-service:
-      path: /usergroups/**
+      path: /groupapi/**
       serviceId: group-service
       stripPrefix: false
       sensitiveHeaders:
