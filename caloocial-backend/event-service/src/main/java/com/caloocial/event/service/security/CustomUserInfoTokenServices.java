@@ -1,4 +1,4 @@
-package com.caloocial.example.service.security;
+package com.caloocial.event.service.security;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

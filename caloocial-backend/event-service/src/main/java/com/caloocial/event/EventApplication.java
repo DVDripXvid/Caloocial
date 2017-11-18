@@ -1,6 +1,6 @@
-package com.caloocial.example;
+package com.caloocial.event;
 
-import com.caloocial.example.service.security.CustomUserInfoTokenServices;
+import com.caloocial.event.service.security.CustomUserInfoTokenServices;
 import feign.RequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -31,7 +31,7 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableConfigurationProperties
 @Configuration
-public class ExampleApplication extends ResourceServerConfigurerAdapter {
+public class EventApplication extends ResourceServerConfigurerAdapter {
 
     @Autowired
     private ResourceServerProperties sso;
@@ -64,7 +64,7 @@ public class ExampleApplication extends ResourceServerConfigurerAdapter {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(ExampleApplication.class, args);
+        SpringApplication.run(EventApplication.class, args);
     }
 
 }
