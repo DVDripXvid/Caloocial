@@ -31,4 +31,9 @@ public class EventServiceImpl implements EventService {
     public Set<Event> getEventsByPerson(long personId) {
         return repository.findByPersonId(personId);
     }
+
+    @Override
+    public void deleteEvent(long eventId) {
+        repository.delete(eventId);
+    }
 }

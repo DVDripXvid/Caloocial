@@ -10,4 +10,6 @@ public interface EventService {
     Set<Event> getEventsByGroup(long groupId);
 
     Set<Event> getEventsByPerson(long personId);
+
+    void deleteEvent(long eventId);
 }

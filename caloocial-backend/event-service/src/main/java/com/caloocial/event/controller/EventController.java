@@ -25,6 +25,11 @@ public class EventController {
         return eventService.createEvent(groupId, event);
     }
 
+    @RequestMapping(method = RequestMethod.DELETE, value = "/groups/{groupId}/events/{eventId}")
+    public void deleteEvent(@PathVariable long groupId, @PathVariable long eventId){
+        eventService.deleteEvent(eventId);
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/persons/{personId}/events")
     public Set<Event> getEventsByPerson(@PathVariable long personId){
         return eventService.getEventsByPerson(personId);
