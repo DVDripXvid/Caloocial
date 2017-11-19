@@ -26,4 +26,9 @@ public class EventServiceImpl implements EventService {
     public Set<Event> getEventsByGroup(long groupId) {
         return repository.findByGroup_Id(groupId);
     }
+
+    @Override
+    public Set<Event> getEventsByPerson(long personId) {
+        return repository.findByPersonId(personId);
+    }
 }

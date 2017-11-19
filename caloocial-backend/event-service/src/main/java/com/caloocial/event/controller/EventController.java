@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/groups")
 public class EventController {
 
     private EventService eventService;
@@ -16,14 +15,19 @@ public class EventController {
         this.eventService = eventService;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{groupId}/events")
+    @RequestMapping(method = RequestMethod.GET, value = "/groups/{groupId}/events")
     public Set<Event> getEventsByGroup(@PathVariable long groupId){
         return eventService.getEventsByGroup(groupId);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/{groupId}/events")
+    @RequestMapping(method = RequestMethod.POST, value = "/groups/{groupId}/events")
     public Event createEvent(@PathVariable long groupId, @RequestBody Event event){
         return eventService.createEvent(groupId, event);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/persons/{personId}/events")
+    public Set<Event> getEventsByPerson(@PathVariable long personId){
+        return eventService.getEventsByPerson(personId);
     }
 
 }

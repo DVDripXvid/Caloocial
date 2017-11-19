@@ -9,4 +9,5 @@ public interface EventService {
     Event createEvent(long groupId, Event event);
     Set<Event> getEventsByGroup(long groupId);
 
+    Set<Event> getEventsByPerson(long personId);
 }
