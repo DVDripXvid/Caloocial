@@ -33,6 +33,16 @@ public class GroupController {
         groupService.addMember(groupId, personId);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/{groupId}/members/{personId}/promote")
+    public void promoteMember(@PathVariable long groupId, @PathVariable long personId){
+        groupService.promoteMemberToAdmin(groupId, personId);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/{groupId}/members/{personId}/demote")
+    public void demoteMember(@PathVariable long groupId, @PathVariable long personId){
+        groupService.demoteAdminToMember(groupId, personId);
+    }
+
     @RequestMapping(method = RequestMethod.DELETE, value = "/{groupId}/members")
     public void removeMemberFromGroup(@PathVariable long groupId, @RequestParam long personId){
         groupService.removeMember(groupId, personId);

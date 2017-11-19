@@ -63,7 +63,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void addMember(long groupId, long personId) {
-        Group group = getGroupById(groupId);
+        Group group = getGroupDetails(groupId);
 
         Person person = personRepository.findById(personId);
         assertNotNull(person, groupId);
@@ -74,25 +74,26 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void removeMember(long groupId, long personId) {
-        Group group = getGroupById(groupId);
+        Group group = getGroupDetails(groupId);
 
-        group.removeMember(groupId);
+        group.removeMember(personId);
 
         groupRepository.save(group);
     }
 
     @Override
     public void promoteMemberToAdmin(long groupId, long personId) {
-        Group group = getGroupById(groupId);
+        Group group = getGroupDetails(groupId);
 
         Optional<Person> member = group.getMemberById(personId);
-
         member.ifPresent(group::promoteToAdmin);
+
+        groupRepository.save(group);
     }
 
     @Override
     public void demoteAdminToMember(long groupId, long personId) {
-        Group group = getGroupById(groupId);
+        Group group = getGroupDetails(groupId);
 
         if(group.getAdministrators().size() == 1){
             return;
@@ -100,6 +101,8 @@ public class GroupServiceImpl implements GroupService {
 
         Optional<Person> admin = group.getAdminById(personId);
         admin.ifPresent(group::demoteToMember);
+
+        groupRepository.save(group);
     }
 
 
