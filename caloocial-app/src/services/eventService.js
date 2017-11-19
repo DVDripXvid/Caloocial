@@ -1,7 +1,7 @@
 import realm from "../realmConfig";
 import { getEventsByGroup, getEventsByPerson } from "../apis/eventApi";
 
-let events = realm.objects("Event");
+let events = realm.objects("Event").sorted("dateTime");
 
 let syncIntervalId;
 

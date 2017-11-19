@@ -3,6 +3,7 @@ import { StyleSheet, View, BackHandler, AsyncStorage } from "react-native";
 import { DrawerNavigator, NavigationActions } from "react-navigation";
 import Login from "./src/screens/Login";
 import Groups from "./src/screens/Groups";
+import Events from "./src/screens/Events";
 import { getNewAccesToken } from "./src/services/userService";
 import axios from "axios";
 
@@ -11,6 +12,9 @@ import config from "./src/config";
 const AppNavigator = DrawerNavigator({
   Groups: {
     screen: Groups
+  },
+  Events: {
+    screen: Events
   },
   Login: {
     screen: Login

@@ -1,18 +1,27 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, AsyncStorage } from "react-native";
-import { Button, Icon, List, ListItem } from "react-native-elements";
+import { StyleSheet, Text, View, AsyncStorage, TextInput } from "react-native";
+import { Button, Icon, List, ListItem, FormInput } from "react-native-elements";
 import Group from "./group/Group";
 import { StackNavigator } from "react-navigation";
 
+import PopupDialog, {
+  SlideAnimation,
+  DialogTitle,
+  DialogButton
+} from "react-native-popup-dialog";
 import config from "../config";
 
 import {
   getGroupsByPersonId,
   addGroupsListener,
-  removeGroupsListener
+  removeGroupsListener,
+  createGroupForPerson
 } from "../services/groupService";
 
-import { getEventsByPersonId, getEventsByGroupId } from "../services/eventService";
+import {
+  getEventsByPersonId,
+  getEventsByGroupId
+} from "../services/eventService";
 
 class Groups extends Component {
   static navigationOptions = {
@@ -27,7 +36,9 @@ class Groups extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      groups: []
+      groups: [],
+      newGroupName: "",
+      personId: ""
     };
     this.groupsAreChanged = this.groupsAreChanged.bind(this);
   }
@@ -40,9 +51,9 @@ class Groups extends Component {
         return JSON.parse(json);
       })
       .then(person => {
-        let groups = getGroupsByPersonId(person.id);
-        //TODO: remove unused call but ensure that somewhere it has been called every app start
+        getGroupsByPersonId(person.id);
         getEventsByPersonId(person.id);
+        this.setState({ personId: person.id });
       })
       .catch(e => console.error(e));
   }
@@ -61,8 +72,40 @@ class Groups extends Component {
         <Button
           buttonStyle={styles.addButton}
           icon={{ name: "group-add" }}
+          onPress={() => this.createDialog.show()}
           title="CREATE A NEW GROUP"
         />
+        <PopupDialog
+          ref={popupDialog => (this.createDialog = popupDialog)}
+          dialogTitle={<DialogTitle title="CREATE GROUP" />}
+          width={0.8}
+          height={0.4}
+          actions={[
+            <DialogButton
+              text="SAVE"
+              onPress={() => {
+                createGroupForPerson(
+                  this.state.personId,
+                  this.state.newGroupName
+                );
+                this.createDialog.dismiss();
+              }}
+              onShown={() => this.newGroupInput.focus()}
+              key="save-button"
+            />
+          ]}
+        >
+          <View style={styles.popupContent}>
+            <TextInput
+              //style={{ marginLeft: 21, marginRight: 21 }}
+              ref={ref => (this.newGroupInput = ref)}
+              placeholder="Please enter group name"
+              onChangeText={newGroupName => this.setState({ newGroupName })}
+            >
+              {this.state.newGroupName}
+            </TextInput>
+          </View>
+        </PopupDialog>
         <List>
           {this.state.groups.map(g => (
             <ListItem
@@ -88,6 +131,10 @@ const styles = StyleSheet.create({
   },
   container: {
     marginTop: 21
+  },
+  popupContent: {
+    alignItems: "stretch",
+    justifyContent: "center"
   }
 });
 

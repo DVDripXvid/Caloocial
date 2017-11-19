@@ -48,6 +48,7 @@ export default class Login extends Component {
         <FormInput
           placeholder="Password"
           onChangeText={text => this.setPassword(text)}
+          secureTextEntry={true}
           ref={ref => this.passwordRef = ref}
         >
           {this.state.password}

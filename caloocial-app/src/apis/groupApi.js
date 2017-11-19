@@ -6,23 +6,40 @@ const host = config.apiGateway + "/groupapi";
 export async function getGroupsByPerson(personId) {
   let response = await axios.get(`${host}/persons/${personId}/groups`);
   if (response.status !== 200) {
-      throw new Error("Failed to fetch groups");
+    throw new Error("Failed to fetch groups");
   }
   return response.data;
 }
 
-export async function getGroupDetails(groupId){
+export async function getGroupDetails(groupId) {
   let response = await axios.get(`${host}/groups/${groupId}`);
-  if(response.status !== 200){
+  if (response.status !== 200) {
     throw new Error("Failed to fetch group details");
   }
   return response.data;
 }
 
-export async function getPersonByUserId(userId){
+export async function getPersonByUserId(userId) {
   let response = await axios.get(`${host}/persons/byUserId?userId=${userId}`);
-  if(response.status !== 200){
+  if (response.status !== 200) {
     throw new Error("Failed to get person be userId");
+  }
+  return response.data;
+}
+
+export async function createGroup(personId, groupName) {
+  let response = await axios.post(
+    `${host}/groups`,
+    {},
+    {
+      params: {
+        personId: personId,
+        groupName: groupName
+      }
+    }
+  );
+  if (response.status !== 200) {
+    throw new Error("Failed to create group");
   }
   return response.data;
 }
