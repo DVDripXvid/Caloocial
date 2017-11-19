@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { Icon } from "react-native-elements";
+import { Icon, List, ListItem } from "react-native-elements";
+
+import { getEventsByGroupId } from "../../services/eventService";
 
 export default class GroupEvents extends Component {
   static navigationOptions = {
@@ -8,10 +10,41 @@ export default class GroupEvents extends Component {
     tabBarIcon: ({ tintColor }) => (<Icon name="event" color={tintColor} ></Icon>)
   };
 
+  constructor(props){
+    super(props);
+    this.state = {
+      events: []
+    };
+    this.onEventsChange = this.onEventsChange.bind(this);
+  }
+
+  componentDidMount() {
+    let eventsRealm = getEventsByGroupId(this.props.screenProps.id);
+    this.onEventsChange(eventsRealm);
+    eventsRealm.addListener(this.onEventsChange);
+  }
+
+  componentWillUnmount(){
+    let eventsRealm = getEventsByGroupId(this.props.screenProps.id);
+    eventsRealm.removeListener(this.onEventsChange);
+  }
+
+  onEventsChange(events){
+    this.setState({events});
+  }
+
   render() {
     return (
       <View>
-        <Text>Not implemented yet :(</Text>
+        <List>
+          {this.state.events.map((e, i) => (
+            <ListItem
+              key={i}
+              subtitle={e.dateTime.toDateString()}
+              title={e.name}
+            />
+          ))}
+        </List>
       </View>
     );
   }

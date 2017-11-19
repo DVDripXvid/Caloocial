@@ -12,6 +12,8 @@ import {
   removeGroupsListener
 } from "../services/groupService";
 
+import { getEventsByPersonId, getEventsByGroupId } from "../services/eventService";
+
 class Groups extends Component {
   static navigationOptions = {
     //Tab navigator opts
@@ -39,6 +41,8 @@ class Groups extends Component {
       })
       .then(person => {
         let groups = getGroupsByPersonId(person.id);
+        //TODO: remove unused call but ensure that somewhere it has been called every app start
+        getEventsByPersonId(person.id);
       })
       .catch(e => console.error(e));
   }

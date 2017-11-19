@@ -1,7 +1,7 @@
 import config from "../config";
 import axios from "axios";
 
-const host = config.apiGateway + "/usergroups";
+const host = config.apiGateway + "/groupapi";
 
 export async function getGroupsByPerson(personId) {
   let response = await axios.get(`${host}/persons/${personId}/groups`);

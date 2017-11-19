@@ -16,33 +16,28 @@ export function login(username, password) {
   return getAccessToken(username, password)
     .then(resp => {
       if (resp.status === 200) {
-        updateCredentials(
-          resp.data.access_token,
-          resp.data.refresh_token
-        );
-        refreshTimeoutId = setTimeout(
-          getNewAccesToken,
-          resp.data.expires_in * 900
-        );
+        updateCredentials(resp.data.access_token, resp.data.refresh_token);
+        setTimeoutForRefreshToken(resp.data.expires_in * 900);
       }
       return resp;
     })
     .catch(e => console.error(e));
 }
 
-async function getNewAccesToken() {
+function setTimeoutForRefreshToken(time) {
+  if (!refreshTimeoutId) {
+    return;
+  }
+  refreshTimeoutId = setTimeout(getNewAccesToken, resp.data.expires_in * 900);
+}
+
+export async function getNewAccesToken() {
   try {
     let refreshToken = await AsyncStorage.getItem(config.store.refreshTokenKey);
     let resp = await refreshAccessToken(refreshToken);
     if (resp.status === 200) {
-      await updateCredentials(
-        resp.data.access_token,
-        resp.data.refresh_token
-      );
-      refreshTimeoutId = setTimeout(
-        getNewAccesToken,
-        resp.data.expires_in * 900
-      );
+      await updateCredentials(resp.data.access_token, resp.data.refresh_token);
+      setTimeoutForRefreshToken(resp.data.expires_in * 900);
     }
   } catch (e) {
     console.error(e);

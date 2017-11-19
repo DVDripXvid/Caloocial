@@ -1,16 +1,5 @@
-import Realm from "realm";
+import realm from "../realmConfig";
 import { getGroupsByPerson } from "../apis/groupApi";
-
-const groupSchema = {
-  name: "Group",
-  primaryKey: "id",
-  properties: {
-    id: "int",
-    name: "string"
-  }
-};
-
-const realm = new Realm({ schema: [groupSchema] });
 
 let groups = realm.objects("Group");
 
@@ -18,11 +7,12 @@ let syncIntervalId;
 
 export function getGroupsByPersonId(id) {
   if(!syncIntervalId){
-    syncIntervalId = setInterval(() => getGroupsByPersonId(id), 10000);
+    syncIntervalId = setInterval(() => getGroupsByPersonId(id), 21000);
   }
   getGroupsByPerson(id).then(syncronizeGroups).catch(error => {
     clearInterval(syncIntervalId);
     syncIntervalId = null;
+    console.warn(error);
   });
   return groups;
 }
@@ -55,4 +45,3 @@ function syncronizeGroups(fetchedGroups) {
     );
   });
 }
-1;

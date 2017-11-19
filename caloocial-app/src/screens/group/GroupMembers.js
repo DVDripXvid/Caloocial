@@ -14,7 +14,7 @@ export default class GroupMembers extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      members: [{ displayName: "Karcsi member" }]
+      members: []
     };
   }
 
