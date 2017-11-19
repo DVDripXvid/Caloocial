@@ -12,21 +12,17 @@ import PopupDialog, {
 import config from "../config";
 
 import {
-  getGroupsByPersonId,
+  getGroups,
   addGroupsListener,
   removeGroupsListener,
   createGroupForPerson
 } from "../services/groupService";
 
-import {
-  getEventsByPersonId,
-  getEventsByGroupId
-} from "../services/eventService";
+import { getEvents, getEventsByGroupId } from "../services/eventService";
 
 class Groups extends Component {
   static navigationOptions = {
-    //Tab navigator opts
-    title: "Groups",
+    //Stack navigator opts
     header: null,
     //Draw navigator opts
     drawerLabel: "Groups",
@@ -37,25 +33,16 @@ class Groups extends Component {
     super(props);
     this.state = {
       groups: [],
-      newGroupName: "",
-      personId: ""
+      newGroupName: ""
     };
     this.groupsAreChanged = this.groupsAreChanged.bind(this);
   }
 
   componentDidMount() {
     addGroupsListener(this.groupsAreChanged);
-    AsyncStorage.getItem(config.store.personKey)
-      .then(json => {
-        if (!json) throw "person is null";
-        return JSON.parse(json);
-      })
-      .then(person => {
-        getGroupsByPersonId(person.id);
-        getEventsByPersonId(person.id);
-        this.setState({ personId: person.id });
-      })
-      .catch(e => console.error(e));
+    getEvents();
+    let groups = getGroups();
+    this.groupsAreChanged(groups);
   }
 
   componentWillUnmount() {
@@ -64,6 +51,15 @@ class Groups extends Component {
 
   groupsAreChanged(groups) {
     this.setState({ groups });
+  }
+
+  createGroup() {
+    AsyncStorage.getItem(config.store.personKey)
+      .then(json => JSON.parse(json))
+      .then(person => {
+        createGroupForPerson(person.id, this.state.newGroupName);
+      })
+      .catch(e => console.error(e));
   }
 
   render() {
@@ -84,10 +80,7 @@ class Groups extends Component {
             <DialogButton
               text="SAVE"
               onPress={() => {
-                createGroupForPerson(
-                  this.state.personId,
-                  this.state.newGroupName
-                );
+                this.createGroup();
                 this.createDialog.dismiss();
               }}
               onShown={() => this.newGroupInput.focus()}

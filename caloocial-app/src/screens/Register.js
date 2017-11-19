@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 import { Button, FormInput, Icon } from "react-native-elements";
-import { StackNavigator } from "react-navigation";
 
-import Register from "./Register";
-import { login } from "../services/userService";
+import { register } from "../services/userService";
 
-class Login extends Component {
+export default class Register extends Component {
   static navigationOptions = {
     //Stack navigator opts
-    header: null
+    title: "Registration to Caloocial"
   };
 
   constructor(props) {
@@ -28,18 +26,14 @@ class Login extends Component {
     this.setState({ password });
   }
 
-  onSignInClick() {
-    login(this.state.username, this.state.password)
+  onSignUpClick() {
+    register(this.state.username, this.state.password)
       .then(resp => {
         if (resp.status === 200) {
-          this.props.screenProps.rootNavigation.navigate("Groups");
+          this.props.navigation.navigate("Login");
         }
       })
       .catch(e => console.error(e));
-  }
-
-  onSignUpClick() {
-    this.props.navigation.navigate("Register");
   }
 
   render() {
@@ -61,14 +55,9 @@ class Login extends Component {
           {this.state.password}
         </FormInput>
         <Button
-          onPress={() => this.onSignInClick()}
-          icon={{ name: "login", type: "entypo" }}
-          title="SIGN IN"
-        />
-        <Button
           onPress={() => this.onSignUpClick()}
-          icon={{ name: "question", type: "font-awesome" }}
-          title="Not using Caloocial yet?"
+          icon={{ name: "check", type: "entypo" }}
+          title="SIGN UP"
         />
       </View>
     );
@@ -83,33 +72,3 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   }
 });
-
-const LoginStackNav = StackNavigator(
-  {
-    Login: {
-      screen: Login
-    },
-    Register: {
-      screen: Register
-    }
-  },
-  {
-    headerMode: "screen"
-  }
-);
-
-export default class LoginNavigator extends Component {
-  static navigationOptions = {
-    drawerLabel: "Logout",
-    drawerIcon: ({ tintColor }) => (
-      <Icon name="log-out" type="entypo" color={tintColor} />
-    ),
-    drawerLockMode: "locked-closed"
-  };
-
-  render() {
-    return (
-      <LoginStackNav screenProps={{ rootNavigation: this.props.navigation }} />
-    );
-  }
-}

@@ -34,3 +34,10 @@ export function refreshAccessToken(refreshToken) {
     }
   );
 }
+
+export function createUser(username, password) {
+  return axios.post(`${host}/users`, {
+    username: username,
+    password: password
+  });
+}

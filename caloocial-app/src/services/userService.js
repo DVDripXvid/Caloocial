@@ -1,7 +1,8 @@
 import {
   getAccessToken,
   getPrincipal,
-  refreshAccessToken
+  refreshAccessToken,
+  createUser
 } from "../apis/userApi";
 
 import { getPersonByUserId } from "../apis/groupApi";
@@ -11,6 +12,10 @@ import config from "../config";
 import axios from "axios";
 
 var refreshTimeoutId;
+
+export function register(username, password){
+  return createUser(username, password);
+}
 
 export function login(username, password) {
   return getAccessToken(username, password)

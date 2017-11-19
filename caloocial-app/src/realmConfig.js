@@ -5,7 +5,7 @@ import Realm from "realm";
   primaryKey: "id",
   properties: {
     id: "int",
-    name: "string"
+    name: "string?"
   }
 };
 
@@ -20,4 +20,4 @@ const eventSchema = {
     }
 }
 
-export default realm = new Realm({ schema: [groupSchema, eventSchema] });
+export default realm = new Realm({ schema: [groupSchema, eventSchema], schemaVersion: 1 });

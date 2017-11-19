@@ -5,10 +5,10 @@ import { StackNavigator } from "react-navigation";
 
 import config from "../config";
 import Event from "./event/Event";
-import { getGroupsByPersonId } from "../services/groupService";
+import { getGroups } from "../services/groupService";
 
 import {
-  getEventsByPersonId,
+  getEvents,
   addEventsChangeListener,
   removeEventsChangeListener
 } from "../services/eventService";
@@ -33,16 +33,9 @@ class Events extends Component {
 
   componentDidMount() {
     addEventsChangeListener(this.eventsAreChanged);
-    AsyncStorage.getItem(config.store.personKey)
-      .then(json => {
-        if (!json) throw "person is null";
-        return JSON.parse(json);
-      })
-      .then(person => {
-        getGroupsByPersonId(person.id);
-        getEventsByPersonId(person.id);
-      })
-      .catch(e => console.error(e));
+    getGroups();
+    let events = getEvents();
+    this.eventsAreChanged(events);
   }
 
   componentWillUnmount() {
