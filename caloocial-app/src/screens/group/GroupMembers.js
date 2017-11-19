@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, AsyncStorage } from "react-native";
 import { Icon, List, ListItem, Button } from "react-native-elements";
 import {
   getGroupDetails,
@@ -8,6 +8,7 @@ import {
   promotePerson,
   demotePerson
 } from "../../apis/groupApi";
+import config from "../../config";
 import SearchPerson from "./SearchPerson";
 
 export default class GroupMembers extends Component {
@@ -23,11 +24,15 @@ export default class GroupMembers extends Component {
     this.state = {
       groupId: props.screenProps.id,
       members: [],
+      personId: "",
       isSearchPersonVisible: false
     };
   }
 
   componentDidMount() {
+    AsyncStorage.getItem(config.store.personKey)
+    .then(json => JSON.parse(json))
+    .then(person => this.setState({personId: person.id}));
     this.reFetchData();
   }
 
@@ -96,6 +101,7 @@ export default class GroupMembers extends Component {
               onPressRightIcon={() => this.deletePerson(m)}
               onLongPress={() => this.changePersonMembership(m)}
               subtitle={m.isAdmin ? "Hold to demote" : "Hold to promote"}
+              disabled={!this.state.members.filter(m => m.id == this.state.personId)[0].isAdmin}
             />
           ))}
         </List>
