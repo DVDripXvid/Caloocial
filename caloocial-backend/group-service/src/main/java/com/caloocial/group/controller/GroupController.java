@@ -23,6 +23,11 @@ public class GroupController {
         return groupService.create(personId, groupName);
     }
 
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{groupId}")
+    public void deleteGroup(@PathVariable long groupId){
+        groupService.deleteGroup(groupId);
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/{groupId}/members")
     public void addMemberToGroup(@PathVariable long groupId, @RequestParam long personId){
         groupService.addMember(groupId, personId);

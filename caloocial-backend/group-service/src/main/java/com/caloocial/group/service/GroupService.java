@@ -15,4 +15,6 @@ public interface GroupService {
 
     Set<Group> getGroupsByPersonId(long personId);
     Group getGroupDetails(long groupId);
+
+    void deleteGroup(long groupId);
 }

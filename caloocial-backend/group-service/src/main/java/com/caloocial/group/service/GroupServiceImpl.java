@@ -113,6 +113,11 @@ public class GroupServiceImpl implements GroupService {
         return groupRepository.findByIdWithPersons(groupId);
     }
 
+    @Override
+    public void deleteGroup(long groupId) {
+        groupRepository.delete(groupId);
+    }
+
     private Group getGroupById(long id){
         Group group = groupRepository.findById(id);
         assertNotNull(group, id);
