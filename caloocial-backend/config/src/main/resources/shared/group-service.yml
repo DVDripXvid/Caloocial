@@ -1,3 +1,12 @@
+security:
+  oauth2:
+    client:
+      clientId: group-service
+      clientSecret: group-secret
+      accessTokenUri: http://auth-service:5000/uaa/oauth/token
+      grant-type: client_credentials
+      scope: server
+
 server:
   context-path: /groupapi
   port: 9686
