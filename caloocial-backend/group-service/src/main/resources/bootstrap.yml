@@ -3,5 +3,5 @@ spring:
     name: group-service
   cloud:
     config:
-      uri: http://localhost:9821
+      uri: http://config:9821
       fail-fast: true

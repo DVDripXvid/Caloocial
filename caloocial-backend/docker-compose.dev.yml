@@ -1,0 +1,31 @@
+version: '2.1'
+services:
+  calo-rabbitmq:
+    ports:
+      - 5672:5672
+
+  config:
+    build: config
+    ports:
+      - 9821:9821
+
+  service-registry:
+    build: service-registry
+
+  gateway:
+    build: gateway
+
+  auth-service:
+    build: auth-service
+    ports:
+      - 5000:5000
+
+  event-service:
+    build: event-service
+    ports:
+      - 2121:2121
+
+  group-service:
+    build: group-service
+    ports:
+      - 9686:9686
