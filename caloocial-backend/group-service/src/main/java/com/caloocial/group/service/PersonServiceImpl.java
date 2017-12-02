@@ -24,6 +24,6 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Set<Person> findByUserNameContains(String query) {
-        return personRepository.findByDisplayNameRegex(query);
+        return personRepository.findByDisplayNameContains(query);
     }
 }
