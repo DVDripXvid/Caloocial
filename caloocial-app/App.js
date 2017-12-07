@@ -9,6 +9,8 @@ import axios from "axios";
 
 import config from "./src/config";
 
+console.disableYellowBox = true;
+
 const AppNavigator = DrawerNavigator({
   Groups: {
     screen: Groups
@@ -35,7 +37,7 @@ export default class App extends React.Component {
       error => {
         console.log("======= ERROR =======");
         console.log(error.request);
-        console.error(error.response);
+        console.warn(error.response);
         if (error.response.status === 401)
           this.navigator.dispatch(
             NavigationActions.navigate({ routeName: "Login" })

@@ -33,7 +33,7 @@ function setTimeoutForRefreshToken(time) {
   if (!refreshTimeoutId) {
     return;
   }
-  refreshTimeoutId = setTimeout(getNewAccesToken, resp.data.expires_in * 900);
+  refreshTimeoutId = setTimeout(getNewAccesToken, time);
 }
 
 export async function getNewAccesToken() {

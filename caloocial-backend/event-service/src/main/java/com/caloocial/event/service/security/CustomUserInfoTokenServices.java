@@ -116,10 +116,6 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
             if (restTemplate == null) {
                 BaseOAuth2ProtectedResourceDetails resource = new BaseOAuth2ProtectedResourceDetails();
                 resource.setClientId(this.clientId);
-                //TODO: remove hardcode
-                /*resource.setClientSecret("example-secret");
-                resource.setGrantType("client_credentials");
-                resource.setScope(Arrays.asList("server"));*/
                 restTemplate = new OAuth2RestTemplate(resource);
             }
             OAuth2AccessToken existingToken = restTemplate.getOAuth2ClientContext()

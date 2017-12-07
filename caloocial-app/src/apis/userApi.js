@@ -8,7 +8,7 @@ export function getAccessToken(username, passwordHash) {
     host + "/oauth/token",
     {},
     {
-      headers: { Authorization: "Basic YnJvd3Nlcjo=" },
+      headers: { Authorization: "Basic YXBwOg==" },
       params: {
         username: username,
         password: passwordHash,
@@ -36,6 +36,7 @@ export function refreshAccessToken(refreshToken) {
 }
 
 export function createUser(username, password) {
+  axios.defaults.headers.common["Authorization"] = null;
   return axios.post(`${host}/users`, {
     username: username,
     password: password

@@ -16,6 +16,7 @@
         <module>service-registry</module>
         <module>event-service</module>
         <module>group-service</module>
+        <module>service-monitor</module>
     </modules>
 
 </project>

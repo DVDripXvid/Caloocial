@@ -14,6 +14,9 @@ public interface PersonRepository extends GraphRepository<Person> {
     @Query("MATCH (p:Person{userId: {0}}) RETURN p")
     Person findByUserId(Long userId);
 
+    @Query("MATCH (u:User{username: {0}}), (p:Person{userId: ID(u)}) RETURN p")
+    Person findByUserName(String username);
+
     @Query("MATCH (p:Person) WHERE p.displayName CONTAINS {0} RETURN p")
     Set<Person> findByDisplayNameContains(String query);
 
