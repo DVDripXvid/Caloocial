@@ -3,5 +3,5 @@ spring:
     name: event-service
   cloud:
     config:
-      uri: http://config:9821
+      uri: ${CONFIG_HOST}
       fail-fast: true

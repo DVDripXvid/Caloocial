@@ -1,5 +1,5 @@
 export default {
-    apiGateway: "http://152.66.175.208:4000",
+    apiGateway: "http://54.159.235.56:4000",
     store: {
         storageKey: "@CaloocialStore:",
         accessTokenKey: this.storageKey + "AccessToken",
