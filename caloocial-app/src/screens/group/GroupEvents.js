@@ -16,7 +16,8 @@ export default class GroupEvents extends Component {
     this.state = {
       groupId: this.props.screenProps.id,
       isEventModalVisible: false,
-      events: []
+      events: [],
+      selectedEvent: null
     };
     this.onEventsChange = this.onEventsChange.bind(this);
   }
@@ -51,14 +52,29 @@ export default class GroupEvents extends Component {
               key={i}
               subtitle={e.dateTime.toDateString()}
               title={e.name}
+              onPress={() =>
+                this.setState({ isEventModalVisible: true, selectedEvent: e })
+              }
             />
           ))}
         </List>
-        <GroupEventForm
-          onReady={() => this.setState({ isEventModalVisible: false })}
-          visible={this.state.isEventModalVisible}
-          groupId={this.state.groupId}
-        />
+        {this.state.isEventModalVisible && (
+          <GroupEventForm
+            onReady={() =>
+              this.setState({ isEventModalVisible: false, selectedEvent: null })
+            }
+            groupId={this.state.groupId}
+            name={this.state.selectedEvent ? this.state.selectedEvent.name : ""}
+            dateTime={
+              this.state.selectedEvent
+                ? this.state.selectedEvent.dateTime
+                : new Date()
+            }
+            eventId={
+              this.state.selectedEvent ? this.state.selectedEvent.id : null
+            }
+          />
+        )}
       </View>
     );
   }

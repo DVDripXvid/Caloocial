@@ -19,13 +19,18 @@ export async function getEventsByPerson(personId) {
     return resp.data;
 }
 
-export async function createEventInGroup(groupId, dateTime, name){
-    let resp = await axios.post(`${host}/groups/${groupId}/events`, {
-        name: name,
-        dateTime: dateTime
-    });
+export async function createEventInGroup(groupId, event){
+    let resp = await axios.post(`${host}/groups/${groupId}/events`, event);
     if(resp.status !== 200){
         throw new Error("Failed to create event");
+    }
+    return resp.data;
+}
+
+export async function modifyEvent(groupId, eventId, event){
+    let resp = await axios.put(`${host}/groups/${groupId}/events/${eventId}`, event);
+    if(resp.status !== 200){
+        throw new Error("Failed to modify event");
     }
     return resp.data;
 }

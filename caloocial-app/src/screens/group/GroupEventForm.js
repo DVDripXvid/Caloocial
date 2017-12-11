@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Modal, StyleSheet, Text } from "react-native";
 import { FormInput, FormLabel, Button, Icon } from "react-native-elements";
-import { createEventInGroup } from "../../apis/eventApi";
+import { createEvent, modifyEvent } from "../../services/eventService";
 import DateTimePicker from "react-native-modal-datetime-picker";
 
 export default class GroupEventForm extends Component {
@@ -9,14 +9,28 @@ export default class GroupEventForm extends Component {
     super(props);
     this.state = {
       isDateTimePickerVisible: false,
-      dateTime: new Date(),
-      name: ""
+      name: props.name || "",
+      dateTime: props.dateTime || new Date(),
+      eventId: props.eventId
     };
   }
 
-
   save() {
-    createEventInGroup(this.props.groupId, this.state.dateTime, this.state.name)
+    let prom;
+    if (this.state.eventId) {
+      prom = modifyEvent(this.props.groupId, this.state.eventId, {
+        id: this.state.eventId,
+        name: this.state.name,
+        dateTime: this.state.dateTime
+      });
+    } else {
+      prom = createEvent(this.props.groupId, {
+        name: this.state.name,
+        dateTime: this.state.dateTime
+      });
+    }
+
+    prom
       .then(event => {
         this.props.onReady();
       })
@@ -28,7 +42,7 @@ export default class GroupEventForm extends Component {
       <Modal
         animationType="slide"
         transparent={false}
-        visible={this.props.visible}
+        visible
         onRequestClose={() => this.props.onReady()}
       >
         <View style={styles.container}>
@@ -56,7 +70,8 @@ export default class GroupEventForm extends Component {
           mode="datetime"
           isVisible={this.state.isDateTimePickerVisible}
           onConfirm={picked =>
-            this.setState({ dateTime: picked, isDateTimePickerVisible: false })}
+            this.setState({ dateTime: picked, isDateTimePickerVisible: false })
+          }
           onCancel={() => this.setState({ isDateTimePickerVisible: false })}
         />
       </Modal>

@@ -1,5 +1,5 @@
 import realm from "../realmConfig";
-import { getEventsByGroup, getEventsByPerson } from "../apis/eventApi";
+import * as api from "../apis/eventApi";
 import { AsyncStorage } from "react-native";
 import config from "../config";
 
@@ -14,7 +14,7 @@ export function getEvents() {
       if (!syncIntervalId) {
         syncIntervalId = setInterval(() => getEvents(), 21000);
       }
-      getEventsByPerson(person.id)
+      api.getEventsByPerson(person.id)
         .then(syncronizeEvents)
         .catch(error => {
           clearInterval(syncIntervalId);
@@ -28,6 +28,18 @@ export function getEvents() {
 
 export function getEventsByGroupId(groupId) {
   return events.filtered(`group.id == ${groupId}`);
+}
+
+export function createEvent(groupId, event){
+  let prom = api.createEventInGroup(groupId, event);
+  prom.then(() => getEvents());
+  return prom;
+}
+
+export function modifyEvent(groupId, eventId, event){
+  let prom = api.modifyEvent(groupId, eventId, event);
+  prom.then(() => getEvents());
+  return prom;
 }
 
 export function addEventsChangeListener(listener) {
