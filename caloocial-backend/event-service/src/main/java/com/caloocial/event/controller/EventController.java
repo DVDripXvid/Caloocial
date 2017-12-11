@@ -37,7 +37,7 @@ public class EventController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/groups/{groupId}/events/{eventId}")
-    public Event modifyEvent(@RequestBody Event event, long eventId) throws EventNotFoundException {
+    public Event modifyEvent(@RequestBody Event event, @PathVariable("eventId") Long eventId) throws EventNotFoundException {
         return eventService.modifyEvent(eventId, event);
     }
 

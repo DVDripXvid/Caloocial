@@ -42,8 +42,9 @@ public class EventServiceImpl implements EventService {
     public Event modifyEvent(long eventId, Event event) throws EventNotFoundException {
         Event oldEvent = repository.findOne(eventId);
         if(oldEvent != null){
-            event.setId(oldEvent.getId());
-            return repository.save(event);
+            oldEvent.setDateTime(event.getDateTime());
+            oldEvent.setName(event.getName());
+            return repository.save(oldEvent);
         }
         throw new EventNotFoundException();
     }
