@@ -59,11 +59,10 @@ class Events extends Component {
             <ListItem
               key={e.id}
               title={e.name}
-              subtitle={e.dateTime.toDateString()}
+              subtitle={e.dateTime.toDateString() + `(${e.group.name})`}
               onPress={() =>
                 this.props.navigation.navigate("Event", {
-                  id: e.id,
-                  name: e.name
+                  event: e
                 })}
             />
           ))}
@@ -91,7 +90,7 @@ const EventsNavigator = StackNavigator(
       path: "events/:id",
       screen: Event,
       navigationOptions: ({ navigation }) => ({
-        title: navigation.state.params.name
+        title: navigation.state.params.event.name
       })
     }
   },
