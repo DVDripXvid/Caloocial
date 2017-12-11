@@ -34,3 +34,11 @@ export async function modifyEvent(groupId, eventId, event){
     }
     return resp.data;
 }
+
+export async function deleteEvent(groupId, eventId){
+    let resp = await axios.delete(`${host}/groups/${groupId}/events/${eventId}`);
+    if(resp.status !== 200){
+        throw new Error("Failed to delete event");
+    }
+    return resp.data;
+}

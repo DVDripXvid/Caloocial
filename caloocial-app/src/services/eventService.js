@@ -36,6 +36,12 @@ export function createEvent(groupId, event){
   return prom;
 }
 
+export function deleteEvent(groupId, eventId){
+  let prom = api.deleteEvent(groupId, eventId);
+  prom.then(() => getEvents());
+  return prom;
+}
+
 export function modifyEvent(groupId, eventId, event){
   let prom = api.modifyEvent(groupId, eventId, event);
   prom.then(() => getEvents());

@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { View, Modal, StyleSheet, Text } from "react-native";
 import { FormInput, FormLabel, Button, Icon } from "react-native-elements";
-import { createEvent, modifyEvent } from "../../services/eventService";
+import {
+  createEvent,
+  modifyEvent,
+  deleteEvent
+} from "../../services/eventService";
 import DateTimePicker from "react-native-modal-datetime-picker";
 
 export default class GroupEventForm extends Component {
@@ -37,6 +41,12 @@ export default class GroupEventForm extends Component {
       .catch(err => console.error(err));
   }
 
+  delete() {
+    deleteEvent(this.props.groupId, this.state.eventId)
+      .then(resp => this.props.onReady())
+      .catch(err => console.error(error));
+  }
+
   render() {
     return (
       <Modal
@@ -55,16 +65,27 @@ export default class GroupEventForm extends Component {
           </FormInput>
           <FormLabel>Event date</FormLabel>
           <Button
+            buttonStyle={styles.dateButton}
             iconRight={{ name: "calendar-clock", type: "material-community" }}
             title={this.state.dateTime.toLocaleString()}
             onPress={() => this.setState({ isDateTimePickerVisible: true })}
           />
-          <Button
-            buttonStyle={styles.saveButton}
-            icon={{ name: "save" }}
-            title="SAVE EVENT"
-            onPress={() => this.save()}
-          />
+          <View style={styles.btnContainer}>
+            {this.state.eventId && (
+              <Button
+                buttonStyle={styles.deleteButton}
+                icon={{ name: "delete" }}
+                title="DELETE EVENT"
+                onPress={() => this.delete()}
+              />
+            )}
+            <Button
+              buttonStyle={styles.saveButton}
+              icon={{ name: "save" }}
+              title="SAVE EVENT"
+              onPress={() => this.save()}
+            />
+          </View>
         </View>
         <DateTimePicker
           mode="datetime"
@@ -83,8 +104,18 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 50
   },
+  btnContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 21
+  },
   saveButton: {
-    marginTop: 21,
     backgroundColor: "#923"
+  },
+  dateButton: {
+    backgroundColor: "#00b3b3"
+  },
+  deleteButton: {
+    backgroundColor: "#999"
   }
 });
