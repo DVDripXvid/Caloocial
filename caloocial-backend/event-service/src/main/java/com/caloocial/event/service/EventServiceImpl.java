@@ -2,6 +2,7 @@ package com.caloocial.event.service;
 
 import com.caloocial.event.domain.Event;
 import com.caloocial.event.domain.Group;
+import com.caloocial.event.exception.EventNotFoundException;
 import com.caloocial.event.repository.EventRepository;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +36,15 @@ public class EventServiceImpl implements EventService {
     @Override
     public void deleteEvent(long eventId) {
         repository.delete(eventId);
+    }
+
+    @Override
+    public Event modifyEvent(long eventId, Event event) throws EventNotFoundException {
+        Event oldEvent = repository.findOne(eventId);
+        if(oldEvent != null){
+            event.setId(oldEvent.getId());
+            return repository.save(event);
+        }
+        throw new EventNotFoundException();
     }
 }
